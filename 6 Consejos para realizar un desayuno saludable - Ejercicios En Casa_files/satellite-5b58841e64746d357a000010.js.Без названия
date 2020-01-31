@@ -1,0 +1,103 @@
+/**
+ * Función para marcar PV en Facebook Pixel
+ * Necesita que se haya cargado la librería (abajo de este script) que crea el objeto fbq.
+ *
+ **/
+function fbk_trackPV(){
+
+	if(typeof fbq == "undefined")
+	  return false;
+
+	fbq('track', 'PageView');
+
+	window.fbq('track', 'ViewContent',
+		{
+			content_name: _satellite.getVar("pageName"),
+			content_category: _satellite.getVar("primaryCategory"),
+			sysEnv: _satellite.getVar("sysEnv"),
+			campaign: _satellite.getVar("campaign") != "" ? _satellite.getVar("campaign") : "none",
+			trackingCode: _satellite.getVar("campaign") != "" ? _satellite.getVar("campaign") : "none",
+			registeredUser: _satellite.getVar("registeredUser") == "" ? "none" : (_satellite.getVar("registeredUser") == "1" ? "reg" : "anon")
+		}
+    );
+}
+
+
+/**
+* Función de Facebook Pixel para el marcado de eventos de conversion. Llamada desde la genérica dtm_trackEvent.
+* Solo marcará eventos que se mapeen.
+* @param eventName nombre en clave en string del evento.
+* @param data objeto con las variables adjuntas al evento.
+*/
+function fbk_trackEvent(eventName, data){
+	switch(eventName){
+		case "userNewsletterIN":
+		case "userRegister":
+		case "userPreRegister":
+		case "UUvinc":
+			fbq('track', 'CompleteRegistration',
+				{
+					content_name: _satellite.getVar("pageName"),
+					content_category: _satellite.getVar("primaryCategory"),
+					sysEnv: _satellite.getVar("sysEnv"),
+					status: data.hasOwnProperty("registerStatus") ? data.registerStatus : "register",
+					newsletters: data.hasOwnProperty("newsletters") ? data.newsletters : "",
+					reg_origin: data.hasOwnProperty("registerOrigin") ? data.registerOrigin.toLowerCase() : "",
+					reg_prod_origin: data.hasOwnProperty("registerProd") ? data.registerProd.toLowerCase() : "",
+					reg_type: data.hasOwnProperty("registerType") ? fbk_formatRegType(data.registerType) : ""
+				}
+			);
+			break;
+		default:
+			return false;
+	}
+}
+
+/**
+ * Función para formatear el parámetro con el tipo de registro. A Facebook se le mandan nombres especiales, distintos de los estándar mandados
+ * en dtm_trackEvent.
+ *
+ **/
+function fbk_formatRegType(regType){
+
+	var regTypeForm = "";
+	switch(regType){
+	  case "clasico":
+		regTypeForm = "classic";
+		break;
+	  case "facebook":
+	  case "twitter":
+	  case "linkedin":
+	  case "google":
+	  case "msn":
+		regTypeForm = "rrss(" + regType + ")";
+		break;
+	  case "suscripcion":
+		regTypeForm = "suscription";
+		break;
+		case "vinculacion":
+				regTypeForm = "vinculation";
+		break;
+	  default:
+		regTypeForm = "";
+	}
+
+	return regTypeForm;
+}
+
+//Carga de la librería de Facebook Pixel
+try{
+	//Facebook pixel
+	if(typeof fbq == "undefined"){
+		!function(f,b,e,v,n,t,s){if(f.fbq)return;n=f.fbq=function(){n.callMethod?
+		n.callMethod.apply(n,arguments):n.queue.push(arguments)};if(!f._fbq)f._fbq=n;
+		n.push=n;n.loaded=!0;n.version='2.0';n.queue=[];t=b.createElement(e);t.async=!0;
+		t.src=v;s=b.getElementsByTagName(e)[0];s.parentNode.insertBefore(t,s)}(window,
+		document,'script', 'https://connect.facebook.net/en_US/fbevents.js');
+		fbq('set', 'autoConfig', false, '558744610944578');
+	}
+	fbq('init', '558744610944578');
+	fbk_trackPV();
+}catch(e){
+	_satellite.notify("Error al insertar el pixel de FB");
+}

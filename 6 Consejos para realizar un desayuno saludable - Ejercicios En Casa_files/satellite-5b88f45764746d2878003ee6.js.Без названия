@@ -1,0 +1,512 @@
+var dtm_version = "aso-2.4";
+
+var dtm_trackingCodes = ['id_externo_display', 'id_externo_sem', 'id_externo_nwl', 'id_externo_promo', 'id_externo_rsoc', 'id_externo_ref', 'id_externo_portada', 'id_externo_noti', 'sdi', 'sse', 'sma', 'prm', 'ssm', 'afl', 'agr', 'int', 'noti', 'idexterno'];
+
+/**
+ * Función para la generación del Data Layer principal de la página: window.digitalData.
+ * Recoge los valores del objeto window.dataLayerDTM puesto en página, si no existiese toma valores por defecto para cada parámetro.
+ **/
+function dtm_generateDataLayer() {
+
+	var primaryCategory = "desconocido";
+	var subCategory1 = "";
+	var subCategory2 = "";
+	var siteID = "ascom";
+	var server = location.host;
+	var protocol = "https";
+	var destinationURL = document.location.href;
+  var metaTitle = getMetas("property", "og:title");
+	var pageTitle = metaTitle != "" ? metaTitle[0] : document.getElementsByTagName('title')[0].innerHTML;
+  var articleTitle = metaTitle != "" ? metaTitle[0] : document.getElementsByTagName('title')[0].innerHTML;
+	var referrer = document.referrer;
+	var sysEnv = "web";
+	var pageType = "otros";
+	var language = document.documentElement.lang ? document.documentElement.lang : "es";
+	var pageName = siteID + destinationURL.replace(/[\?#].*?$/g, "").replace(/^http.?:\/\/([^\/]*)/, "");
+  var date = new Date();
+  var cms = "";
+
+	//Si hay dataLayerDTM en página lo utilizamos
+	if(typeof window.dataLayerDTM != "undefined"){
+		primaryCategory = (typeof window.dataLayerDTM != "undefined" && typeof window.dataLayerDTM.primaryCategory != "undefined") ? window.dataLayerDTM.primaryCategory : "";
+		subCategory1 = (typeof window.dataLayerDTM != "undefined" && typeof window.dataLayerDTM.subCategory1 != "undefined") ? window.dataLayerDTM.subCategory1 : primaryCategory;
+		subCategory2 = (typeof window.dataLayerDTM != "undefined" && typeof window.dataLayerDTM.subCategory2 != "undefined") ? window.dataLayerDTM.subCategory2 : "";
+		siteID = (typeof window.dataLayerDTM != "undefined" && typeof window.dataLayerDTM.siteID != "undefined") ? window.dataLayerDTM.siteID : (siteID + "/" + primaryCategory);
+		destinationURL = (typeof window.dataLayerDTM != "undefined" && typeof window.dataLayerDTM.destinationURL != "undefined") ? window.dataLayerDTM.destinationURL : document.location.href;
+		if (destinationURL=="http://meristation.as.com/zonaforo/") {
+      pageType = "portadilla";
+    } else{
+        pageType = (typeof window.dataLayerDTM != "undefined" && typeof window.dataLayerDTM.pageType != "undefined") ? window.dataLayerDTM.pageType : pageType;
+    }
+		sysEnv = (typeof window.dataLayerDTM != "undefined" && typeof window.dataLayerDTM.sysEnv != "undefined") ? window.dataLayerDTM.sysEnv : sysEnv;
+		protocol = (typeof window.dataLayerDTM != "undefined" && typeof window.dataLayerDTM.protocol != "undefined") ? window.dataLayerDTM.protocol : protocol;
+		pageTitle = (typeof window.dataLayerDTM != "undefined" && typeof window.dataLayerDTM.pageTitle != "undefined") ? window.dataLayerDTM.pageTitle : pageTitle;
+		referrer = (typeof window.dataLayerDTM != "undefined" && typeof window.dataLayerDTM.referrer != "undefined") ? window.dataLayerDTM.referrer : referrer;
+		language = (typeof window.dataLayerDTM != "undefined" && typeof window.dataLayerDTM.language != "undefined") ? window.dataLayerDTM.language : language;
+
+		if(dtm_error404()){ //Error 404
+			primaryCategory = "error-404",
+			subCategory1 = subCategory1,
+			pageType = "";
+			//Comprobacion para ejerciciosencasa
+			if(siteName = /http.?:\/\/([^\.]*)\./i.exec(destinationURL)){
+				if(siteName[1] == "ejerciciosencasa"){
+					subCategory1 = "error-404>ejerciciosencasa",
+					siteID = "ascom/ejerciciosencasa";
+				}
+			}
+		}
+
+	//Sino calculamos a través de regExp
+	}else if (result_re = /^(http.?):\/\/([^\/]*)/.exec(destinationURL)){
+        protocol = result_re[1];
+        server = result_re[2];
+
+        if(siteName = /http.?:\/\/([^\.]*)\./i.exec(destinationURL)){
+            switch (siteName[1]) {
+                case "suscripciones": //suscripciones.as.com
+                    primaryCategory = "suscripciones",
+                    siteID = "ascom/suscripciones";
+                    subCategory1 = "suscripciones";
+
+                    if (dtm_error404()) { //Error 404 - Forzado en AppMeasurement
+                        primaryCategory = "error-404",
+                        subCategory1 = "error-404>" + subCategory1,
+                        pageType = "";
+                    }
+
+                    break;
+
+                case "asfan": //asfan.as.com
+                    primaryCategory = "registro",
+                    siteID = "ascom/registro";
+                    subCategory1 = "registro";
+
+                    if (dtm_error404()) { //Error 404 - Forzado en AppMeasurement
+                        primaryCategory = "error-404",
+                        subCategory1 = "error-404>" + subCategory1,
+                        pageType = "";
+                    }
+                    break;
+
+                case "usuarios": //usuarios.as.com
+                    primaryCategory = "usuarios",
+                    siteID = "ascom/usuarios";
+                    subCategory1 = "usuarios";
+                    //Error 404 - No tiene Pagina 404
+                    break;
+
+                default:
+                    primaryCategory = "desconocido";
+                    subCategory1 = "";
+            }
+        }
+    }
+
+    switch (primaryCategory) {
+      case "meristation":
+        cms = "drupal"
+        language = "es"; //Lo forzamos, está como "en"
+        break;
+      case "suscripciones":
+        cms = "wp"
+        break;
+      case "ejerciciosencasa":
+        cms = "wp"
+        break;
+      case "registro":
+        cms = "usun"
+        break;
+      default:
+        cms = "otros"
+        break;
+    }
+
+    pageName = (typeof window.dataLayerDTM != "undefined" && typeof window.dataLayerDTM.pageName != "undefined") ? window.dataLayerDTM.pageName : (siteID + destinationURL.replace(/[\?#].*?$/g, "").replace(/^http.?:\/\/([^\/]*)/, ""));
+
+    window.digitalData = {
+        page: {
+            category: {
+                pageType: pageType,
+                primaryCategory: primaryCategory,
+                subCategory1: subCategory1,
+                subCategory2: subCategory2
+            },
+            pageInfo: {
+                adblocker: "not-set",
+                articleID: "",
+                author: [],
+                businessUnit: "noticias",
+                campaign: dtm_getCampaign(),
+                canonicalURL: destinationURL.replace(/[\?#].*?$/g, ""),
+                cms: cms,
+                creationDate: "",
+                date: {
+                  day: dtm_formatDate(date.getDate()),
+                  dstEnd: "12/31/" + date.getFullYear(),
+                  dstStart: "1/1/" + date.getFullYear(),
+                  fullYear: date.getFullYear(),
+                  gmt: (-(date.getTimezoneOffset() / 60) - 1) >= 0 ? "+" + (-(date.getTimezoneOffset() / 60) - 1).toString() : (-(date.getTimezoneOffset() / 60) - 1),
+                  hours: dtm_formatDate(date.getHours()),
+                  minutes: dtm_formatDate(date.getMinutes()),
+                  month: dtm_formatDate(date.getMonth() + 1),
+                  seconds: dtm_formatDate(date.getSeconds()),
+                  year: date.getFullYear()
+                },
+                destinationURL: destinationURL,
+                domain: "as.com",
+                edition: "es",
+                encoded: "0",
+                geoRegion: "españa",
+                language: language,
+                onsiteSearch: "0",
+                onsiteSearchResults: "",
+                onsiteSearchTerm: "",
+                org: "prisa",
+                pageID: "",
+                pageName: pageName,
+                pageTitle: pageTitle,
+                articleTitle:articleTitle,
+                platform: sysEnv,
+                publisher: "diarioas",
+                referringURL: referrer,
+                server: server,
+                siteID: siteID,
+                ssl: protocol == "https" ? "1" : "0",
+                sysEnv: sysEnv,
+                tags: [],
+                thematic: "deportes",
+                urlParams: dtm_getQueryParam()
+            }
+        },
+        user: {
+            country: "",
+            profileID: "not-set", //Id del usuario en nuestros sistemas
+            registeredUser: "not-set", //logueado o anonimo
+            registeredUserExt: (primaryCategory == "meristation") ? ((dtm_getCookie('MeriUid2') != null) ? "logueado" : "anonimo") : "", //logueado o anonimo plataforma externa
+            userName: ""
+
+        },
+        event: []
+    };
+
+// Llamada a adblocker desde Omniture. Ya que el script está en el head. A la espera de cambio.
+/*  dtm_adblocker();*/
+
+  dtm_solicitarUID("https://seguro.elpais.com/wsUserInfo?c=llamada", function (data) {
+    window.digitalData.user.profileID = (typeof data.id != "undefined" && typeof data.id.uid != "undefined") ? data.id.uid : "not-set";
+    window.digitalData.user.registeredUser = (typeof data.id != "undefined") ? (typeof data.id.nick != "undefined" ? "1" : "0") : 'not-set';
+  });
+} // fin dtm_generateDataLayer
+
+
+/**
+* Función genérica para concatenar un 0 a la izquierda si el parámetro pasado es menor de 10
+* @param date fecha a formatear
+* @return fecha formateada
+*/
+function dtm_formatDate(date) {
+    if(date < 10)
+       return "0" + date;
+    return date;
+} // fin dtm_formatDate
+
+
+/**
+* Función genérica para el marcado de eventos de conversion. Simplemente ejecuta las funciones especificas de cada herramienta.
+* @param eventName nombre en clave en string del evento
+* @param data objeto con las variables adjuntas al evento.
+*/
+function dtm_trackEvent(eventName, data){
+	//Control de parámetros
+	if(typeof eventName != "string")
+		return;
+	if(typeof data != "object")
+		data = {};
+
+	//Omniture
+	if(typeof omn_trackEvent == "function")
+		omn_trackEvent(eventName, data);
+
+	//Facebook
+	if(typeof fbk_trackEvent == "function")
+		fbk_trackEvent(eventName, data);
+
+  //ComScore
+  if(typeof csc_trackEvent == "function")
+    csc_trackEvent(eventName, data)
+
+} // fin dtm_trackEvent
+
+/**
+ * Función para el marcado de PV asíncrona, usada en SmartTV.
+ **/
+function dtm_trackAsyncPV() {
+
+  var date = new Date();
+
+  digitalData.page.category.primaryCategory = (typeof window.dataLayerDTM != "undefined" && typeof window.dataLayerDTM.primaryCategory != "undefined") ? window.dataLayerDTM.primaryCategory : "";
+	digitalData.page.category.subCategory1 = (typeof window.dataLayerDTM != "undefined" && typeof window.dataLayerDTM.subCategory1 != "undefined") ? window.dataLayerDTM.subCategory1 : "";
+  digitalData.page.category.subCategory2 = (typeof window.dataLayerDTM != "undefined" && typeof window.dataLayerDTM.subCategory2 != "undefined") ? window.dataLayerDTM.subCategory2 : "";
+  digitalData.page.category.pageType = (typeof window.dataLayerDTM != "undefined" && typeof window.dataLayerDTM.pageType != "undefined") ? window.dataLayerDTM.pageType : "";
+	digitalData.page.pageInfo.siteID = (typeof window.dataLayerDTM != "undefined" && typeof window.dataLayerDTM.siteID != "undefined") ? window.dataLayerDTM.siteID : "ascom";
+  digitalData.page.pageInfo.sysEnv = (typeof window.dataLayerDTM != "undefined" && typeof window.dataLayerDTM.sysEnv != "undefined") ? window.dataLayerDTM.sysEnv : "";
+  digitalData.page.pageInfo.referringURL = _satellite.getVar("destinationURL");
+  digitalData.page.pageInfo.destinationURL = (typeof window.dataLayerDTM != "undefined" && typeof window.dataLayerDTM.destinationURL != "undefined") ? window.dataLayerDTM.destinationURL : document.location.href;
+  digitalData.page.pageInfo.pageName = (typeof window.dataLayerDTM != "undefined" && typeof window.dataLayerDTM.pageName != "undefined") ? window.dataLayerDTM.pageName : (digitalData.page.pageInfo.siteID + digitalData.page.pageInfo.destinationURL.replace(/[\?#].*?$/g, "").replace(/^http.?:\/\/([^\/]*)/, ""));
+	digitalData.page.pageInfo.protocol = (typeof window.dataLayerDTM != "undefined" && typeof window.dataLayerDTM.protocol != "undefined") ? window.dataLayerDTM.protocol : "https";
+	digitalData.page.pageInfo.pageTitle = (typeof window.dataLayerDTM != "undefined" && typeof window.dataLayerDTM.pageTitle != "undefined") ? window.dataLayerDTM.pageTitle : (document.getElementsByTagName('title')[0] ? document.getElementsByTagName('title')[0].innerHTML.replace(/'|"|\|/g, "").toLowerCase() : "");
+	digitalData.page.pageInfo.referrer = (typeof window.dataLayerDTM != "undefined" && typeof window.dataLayerDTM.referrer != "undefined") ? window.dataLayerDTM.referrer : document.referrer;
+	digitalData.page.pageInfo.language = (typeof window.dataLayerDTM != "undefined" && typeof window.dataLayerDTM.language != "undefined") ? window.dataLayerDTM.language : (document.documentElement.lang ? document.documentElement.lang : "es");
+
+  // Recargar date
+  digitalData.page.pageInfo.date = {
+      day: dtm_formatDate(date.getDate()),
+      dstEnd: "12/31/" + date.getFullYear(),
+      dstStart: "1/1/" + date.getFullYear(),
+      fullYear: date.getFullYear(),
+      gmt: (-(date.getTimezoneOffset() / 60) - 1) >= 0 ? "+" + (-(date.getTimezoneOffset() / 60) - 1).toString() : (-(date.getTimezoneOffset() / 60) - 1),
+      hours: dtm_formatDate(date.getHours()),
+      minutes: dtm_formatDate(date.getMinutes()),
+      month: dtm_formatDate(date.getMonth() + 1),
+      seconds: dtm_formatDate(date.getSeconds()),
+      year: date.getFullYear()
+  };
+
+    //Omniture
+  	if(typeof omn_trackPV == "function")
+  		omn_trackPV(true);
+
+} // fin trackPV
+
+
+/*************************************************** UTILS ***********************************************************************/
+/**
+ * Función para detectar adblockers.
+ **/
+function dtm_adblocker(){
+
+  //Se supone la existencia de body, si no es asi salimos
+  if (!window.document.body){
+    window.digitalData.page.pageInfo.adblocker = "not-set";
+    return "not-set";
+  }
+
+    var baitClass = 'pub_300x250 pub_300x250m pub_728x90 text-ad textAd text_ad text_ads text-ads text-ad-links',
+        baitStyle = 'width: 1px !important; height: 1px !important; position: absolute !important; left: -1000px !important; top: -1000px !important;',
+        bait = document.createElement('div');
+
+    bait.setAttribute('class', baitClass);
+    bait.setAttribute('style', baitStyle);
+
+    window.document.body.insertBefore(bait, window.document.body.childNodes[0]);
+
+    window.setTimeout(function () {
+        var adb = (window.document.body.getAttribute('abp') !== null ||
+            bait.offsetParent === null ||
+            bait.offsetHeight == 0 ||
+            bait.offsetLeft == 0 ||
+            bait.offsetTop == 0 ||
+            bait.offsetWidth == 0 ||
+            bait.clientHeight == 0 ||
+            bait.clientWidth == 0);
+
+        window.document.body.removeChild(bait);
+
+        if(adb)
+            window.digitalData.page.pageInfo.adblocker = "1";
+        else
+            window.digitalData.page.pageInfo.adblocker = "0";
+
+    }, 500);
+} //fin adBlocker
+
+/**
+ * Función para solicitar los datos de usuario del servicio de UU
+ * @param url URL del servicio de UU
+ * @param callback función a ejecutar tras recibir los datos desde el servicio
+ **/
+function dtm_solicitarUID(url, callback) {
+    var callbackName = 'jsonp_callback_' + Math.round(100000 * Math.random());
+    window[callbackName] = function (data) {
+        delete window[callbackName];
+        document.head.removeChild(script);
+        callback(data);
+    };
+
+    var script = document.createElement('script');
+    script.src = url + (url.indexOf('?') >= 0 ? '&' : '?') + 'callback=' + callbackName;
+    document.head.appendChild(script);
+} //fin dtm_solicitarUID
+
+/**
+ * Función para calcular el campaign, detecta los parámetros del array dtm_trackingCodes
+ * @return campaign String con el valor del parámetro encontrado en la URL
+ **/
+function dtm_getCampaign() {
+
+    if (typeof dtm_trackingCodes == "undefined")
+        return "";
+
+    var campaign = "";
+    for (var i = 0; i < dtm_trackingCodes.length; i++) {
+        var trackingCode = dtm_getQueryParam(dtm_trackingCodes[i]);
+        if (trackingCode != "") {
+            campaign = trackingCode;
+            //Si es rsoc buscamos id_externo_ads y lo concatenamos
+            if (dtm_trackingCodes[i] == "id_externo_rsoc" || dtm_trackingCodes[i] == "ssm") {
+                var tc_ads = dtm_getQueryParam("id_externo_ads");
+                tc_ads = tc_ads == "" ? dtm_getQueryParam("ads") : tc_ads;
+                campaign = tc_ads != "" ? (campaign + "-" + tc_ads) : campaign;
+            }
+        }
+    }
+    return campaign;
+} //dtm_getCampaign
+
+/**
+ * Función para recuperar parametros de la URL
+ * Si no se pasa la URL como argumento se hace sobre el location.href
+ * @param name Nombre del parámetro a encontrar, si no se pasa se devuelven todos los que existan.
+ * @param url URL donde buscar el parámetro, si no se pasa se busca en location.href
+ * @return params En caso de buscar un parámetro se devuelve el string con el valor, en caso de buscar todos un array parametro-valor
+ **/
+function dtm_getQueryParam(name, url) {
+    var params = "";
+    name = (typeof name == "undefined" || name == "") ? -1 : name;
+    url = (typeof url == "undefined") ? window.location.href : url;
+    //Si no se pasa nombre se devuelven todos
+    if (name == -1) {
+        params = [];
+        if (typeof digitalData != "undefined" && url == window.location.href)
+            params = digitalData.page.pageInfo.urlParams;
+        else if (url.indexOf("?") != -1) {
+            var search = url.substr(url.indexOf("?") + 1).replace(/\?/g, "&");
+            search = search.split("&");
+            for (var i = 0; i < search.length; i++) {
+                if (search[i].indexOf("=") != -1) {
+                    var param = search[i].split("=");
+                    params[param[0]] = param[1];
+                } else
+                    params[param] = "";
+            }
+        }
+        //Si se pasa nombre, se devuelve
+    } else {
+        params = "";
+        //Si el dataLayer está formado devolvemos el parámetro del DL
+        if (typeof digitalData != "undefined")
+            params = (digitalData.page.pageInfo.urlParams.hasOwnProperty(name)) ? digitalData.page.pageInfo.urlParams[name] : "";
+        else {
+            //Si no, lo buscamos en la URL
+            name = name.replace(/[\[]/, "\\\[").replace(/[\]]/, "\\\]");
+            var regexS = "[\\?&]" + name + "=([^&#]*)";
+            var results = (new RegExp(regexS)).exec(url);
+            params = (results == null) ? "" : decodeURIComponent(results[1].replace(/\+/g, " "));
+        }
+    }
+    return params;
+} //fin dtm_getQueryParam
+
+/**
+ * Función para leer cookies de document.cookie
+ * @param name Nombre de la cookie a leer
+ * @return valor de la cookie o null en caso de no encontrarla
+ **/
+function dtm_getCookie(name) {
+    var nameEQ = name + "=";
+    var ca = document.cookie.split(';');
+    for (var i = 0; i < ca.length; i++) {
+        var c = ca[i];
+        while (c.charAt(0) == ' ') c = c.substring(1, c.length);
+        if (c.indexOf(nameEQ) == 0) return c.substring(nameEQ.length, c.length);
+    }
+    return null;
+} // fin dtm_getCookie
+
+/**
+ * Función para fijar cookies en document.cookie
+ * @param name Nombre de la cookie a fijar
+ * @param value Valor de la cookie a fijar
+ * @param domain Dominio de ámbito de la cookie
+ * @param time Tiempo de expiración de la cookie en milisegundos
+ **/
+function dtm_setCookie(name, value, domain, time) {
+    var expires = "";
+
+    if(time){
+        var date = new Date();
+        date.setTime(date.getTime() + time);
+        expires = "; expires=" + date.toGMTString();
+    }
+
+    document.cookie = name + "=" + value + expires + ";domain=" + domain + ";path=/";
+} // fin dtm_setCookie
+
+/**
+ * Función para limpiar strings pasados por parámetro. Minúsculas, trim, tildes, guiones, puntos y comas y barras bajas.
+ * @param str string a formatear
+ * @param filter filtro a aplicar
+ * @return cadena formateada
+ **/
+function dtm_cleanString(str, filter) {
+    str = str.toLowerCase();
+    str = str.trim();
+
+    if(typeof filter == "undefined" || filter) {
+        str = str.replace(/,/g, "");
+    }
+
+    str = str.replace(/_/g, " ");
+    str = str.replace(/;/g, "");
+    str = str.replace(/-/g, " ");
+    str = str.replace(/á/g, "a");
+    str = str.replace(/é/g, "e");
+    str = str.replace(/í/g, "i");
+    str = str.replace(/ó/g, "o");
+    str = str.replace(/ú/g, "u");
+
+    return str;
+} //fin dtm_cleanString
+
+/**
+ * Función para detectar la página 404.
+ * @return boolean que indica si la página actual es la de error 404.
+ **/
+function dtm_error404(){
+
+    var str = dtm_cleanString(document.title);
+
+    //comprobamos si hay un dataLayer que nos informe del error 404
+    var primaryCat = (typeof window.dataLayerDTM != "undefined" && typeof window.dataLayerDTM.primaryCategory != "undefined") ? window.dataLayerDTM.primaryCategory : "";
+
+    if(primaryCat == "error-404" ||  /error 404 |^404 (error)?|(page)? not found|(pagina)? no encontrada/i.exec(str)) {
+        return true;
+    }else{
+		return false;
+    }
+}
+
+//Generacion del digitalData
+dtm_generateDataLayer();
+
+//Read Article
+if(_satellite.getVar("pageType") == "articulo"){
+	setTimeout(function(){
+		dtm_trackEvent("readArticle");
+	},60000);
+}
+
+function getMetas(attr, value) {
+    if (attr == undefined || attr == "" || value == undefined || value == "" || typeof document.getElementsByTagName != "function")
+        return [];
+    attr = attr.toLowerCase();
+    value = value.toLowerCase();
+    var meta = [];
+    var metas = document.getElementsByTagName('meta');
+    for (i = 0; i < metas.length; i++)
+        if (metas[i].getAttribute(attr) == value)
+            meta.push(metas[i].getAttribute("content"));
+
+    return meta;
+}
