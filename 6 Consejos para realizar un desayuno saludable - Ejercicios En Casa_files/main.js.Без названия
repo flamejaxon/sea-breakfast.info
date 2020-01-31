@@ -1,0 +1,1294 @@
+! function e(t, o, n) {
+    function i(a, r) {
+        if (!o[a]) {
+            if (!t[a]) {
+                var l = "function" == typeof require && require;
+                if (!r && l) return l(a, !0);
+                if (s) return s(a, !0);
+                var c = new Error("Cannot find module '" + a + "'");
+                throw c.code = "MODULE_NOT_FOUND", c
+            }
+            var d = o[a] = {
+                exports: {}
+            };
+            t[a][0].call(d.exports, function (e) {
+                var o = t[a][1][e];
+                return i(o ? o : e)
+            }, d, d.exports, e, t, o, n)
+        }
+        return o[a].exports
+    }
+    for (var s = "function" == typeof require && require, a = 0; a < n.length; a++) i(n[a]);
+    return i
+}({
+    1: [function (e, t, o) {
+        (function (t) {
+            "undefined" != typeof window ? window.$ : "undefined" != typeof t ? t.$ : null;
+            var o = e("./modules/analytics");
+            jQuery(function (e) {
+                e("a[data-track]").click(function () {
+                    var t = e(this).attr("href"),
+                        n = e(this).data("track");
+                    o.track(n, t)
+                })
+            })
+        }).call(this, "undefined" != typeof global ? global : "undefined" != typeof self ? self : "undefined" != typeof window ? window : {})
+    }, {
+        "./modules/analytics": 7
+    }],
+    2: [function (e, t, o) {
+        e("./analytics-tracking"), e("./social"), e("./popup-cookie-info"), e("./nav"), e("./fixed-sidebar"), e("./image-popup"), e("./dfp"), e("./share-widget"), e("./related-posts-mobile"), e("./comments")
+    }, {
+        "./analytics-tracking": 1,
+        "./comments": 3,
+        "./dfp": 4,
+        "./fixed-sidebar": 5,
+        "./image-popup": 6,
+        "./nav": 14,
+        "./popup-cookie-info": 15,
+        "./related-posts-mobile": 16,
+        "./share-widget": 17,
+        "./social": 18
+    }],
+    3: [function (e, t, o) {
+        (function (e) {
+            "undefined" != typeof window ? window.$ : "undefined" != typeof e ? e.$ : null, jQuery(function (e) {
+                e(".show-comments").click(function () {
+                    var t = (e(this).data("href"), e("<div></div>", {
+                        class: "fb-comments",
+                        "data-numposts": 5,
+                        "data-width": "100%",
+                        "data-href": e(this).data("href")
+                    }));
+                    e(this).after(t), e(this).remove(), FB.XFBML.parse()
+                })
+            })
+        }).call(this, "undefined" != typeof global ? global : "undefined" != typeof self ? self : "undefined" != typeof window ? window : {})
+    }, {}],
+    4: [function (e, t, o) {
+        (function (t) {
+            "undefined" != typeof window ? window.$ : "undefined" != typeof t ? t.$ : null, e("./modules/jquery.dfp");
+            var o = e("./modules/config");
+            o.dfp.id && jQuery(function (e) {
+                e.dfp({
+                    dfpID: o.dfp.id,
+                    sizeMapping: {
+                        leaderboard: [{
+                            browser: [320, 400],
+                            ad_sizes: [
+                                [300, 250]
+                            ]
+                        }, {
+                            browser: [480, 200],
+                            ad_sizes: [
+                                [300, 250]
+                            ]
+                        }, {
+                            browser: [768, 0],
+                            ad_sizes: [728, 90]
+                        }, {
+                            browser: [1024, 0],
+                            ad_sizes: [
+                                [970, 250]
+                            ]
+                        }]
+                    }
+                })
+            })
+        }).call(this, "undefined" != typeof global ? global : "undefined" != typeof self ? self : "undefined" != typeof window ? window : {})
+    }, {
+        "./modules/config": 8,
+        "./modules/jquery.dfp": 10
+    }],
+    5: [function (e, t, o) {
+        (function (t) {
+            "undefined" != typeof window ? window.$ : "undefined" != typeof t ? t.$ : null, e("./modules/jquery.hc-sticky"), jQuery(function (e) {
+                var t = e("header").length ? e("header").outerHeight(!0) : 0;
+                e("#sidebar").hcSticky({
+                    offResolutions: -992,
+                    responsive: !0,
+                    innerSticker: ".fixed-widgets",
+                    top: 20,
+                    bottomEnd: t
+                })
+            })
+        }).call(this, "undefined" != typeof global ? global : "undefined" != typeof self ? self : "undefined" != typeof window ? window : {})
+    }, {
+        "./modules/jquery.hc-sticky": 11
+    }],
+    6: [function (e, t, o) {
+        (function (t) {
+            "undefined" != typeof window ? window.$ : "undefined" != typeof t ? t.$ : null, e("./modules/jquery.magnific-popup"), jQuery(function (e) {
+                e("a[rel=popbox]").magnificPopup({
+                    type: "image",
+                    mainClass: "mfp-fade",
+                    removalDelay: 200,
+                    closeOnContentClick: !0,
+                    image: {
+                        titleSrc: function (e) {
+                            return e.el.find("img").attr("alt")
+                        }
+                    }
+                })
+            })
+        }).call(this, "undefined" != typeof global ? global : "undefined" != typeof self ? self : "undefined" != typeof window ? window : {})
+    }, {
+        "./modules/jquery.magnific-popup": 12
+    }],
+    7: [function (e, t, o) {
+        t.exports = {
+            track: function (e, t) {
+                ga("send", "event", e, "Click", t)
+            },
+            trackSocial: function (e) {
+                ga("send", "social", e.network, e.action, e.url)
+            }
+        }
+    }, {}],
+    8: [function (e, t, o) {
+        t.exports = {
+            facebook: {
+                appId: "472440739515454",
+                version: "v2.7",
+                pixel: "536427479825033"
+            },
+            dfp: {
+                id: "1001788"
+            }
+        }
+    }, {}],
+    9: [function (e, t, o) {
+        (function (e) {
+            ! function (n) {
+                "function" == typeof define && define.amd ? define(["jquery"], n) : "object" == typeof o ? t.exports = n("undefined" != typeof window ? window.$ : "undefined" != typeof e ? e.$ : null) : n(jQuery)
+            }(function (e) {
+                function t(e) {
+                    return r.raw ? e : encodeURIComponent(e)
+                }
+
+                function o(e) {
+                    return r.raw ? e : decodeURIComponent(e)
+                }
+
+                function n(e) {
+                    return t(r.json ? JSON.stringify(e) : String(e))
+                }
+
+                function i(e) {
+                    0 === e.indexOf('"') && (e = e.slice(1, -1).replace(/\\"/g, '"').replace(/\\\\/g, "\\"));
+                    try {
+                        return e = decodeURIComponent(e.replace(a, " ")), r.json ? JSON.parse(e) : e
+                    } catch (e) {}
+                }
+
+                function s(t, o) {
+                    var n = r.raw ? t : i(t);
+                    return e.isFunction(o) ? o(n) : n
+                }
+                var a = /\+/g,
+                    r = e.cookie = function (i, a, l) {
+                        if (arguments.length > 1 && !e.isFunction(a)) {
+                            if (l = e.extend({}, r.defaults, l), "number" == typeof l.expires) {
+                                var c = l.expires,
+                                    d = l.expires = new Date;
+                                d.setMilliseconds(d.getMilliseconds() + 864e5 * c)
+                            }
+                            return document.cookie = [t(i), "=", n(a), l.expires ? "; expires=" + l.expires.toUTCString() : "", l.path ? "; path=" + l.path : "", l.domain ? "; domain=" + l.domain : "", l.secure ? "; secure" : ""].join("")
+                        }
+                        for (var f = i ? void 0 : {}, u = document.cookie ? document.cookie.split("; ") : [], p = 0, m = u.length; p < m; p++) {
+                            var g = u[p].split("="),
+                                h = o(g.shift()),
+                                w = g.join("=");
+                            if (i === h) {
+                                f = s(w, a);
+                                break
+                            }
+                            i || void 0 === (w = s(w)) || (f[h] = w)
+                        }
+                        return f
+                    };
+                r.defaults = {}, e.removeCookie = function (t, o) {
+                    return e.cookie(t, "", e.extend({}, o, {
+                        expires: -1
+                    })), !e.cookie(t)
+                }
+            })
+        }).call(this, "undefined" != typeof global ? global : "undefined" != typeof self ? self : "undefined" != typeof window ? window : {})
+    }, {}],
+    10: [function (e, t, o) {
+        (function (e) {
+            ! function (t, n) {
+                "use strict";
+                ! function (n) {
+                    "function" == typeof define && define.amd ? define(["jquery"], n) : n("object" == typeof o ? "undefined" != typeof window ? window.$ : "undefined" != typeof e ? e.$ : null : t.jQuery || t.Zepto)
+                }(function (e) {
+                    var o = this || {},
+                        i = "",
+                        s = 0,
+                        a = 0,
+                        r = 0,
+                        l = ".adunit",
+                        c = !1,
+                        d = !1,
+                        f = "googleAdUnit",
+                        u = function (t, n, a) {
+                            var l;
+                            s = 0, r = 0, i = t, l = e(n), o.shouldCheckForAdBlockers = function () {
+                                return !!a && "function" == typeof a.afterAdBlocked
+                            } /*b(a, l).then(function () {
+                                a = p(a), o.dfpOptions = a, e(function () {
+                                    m(a, l), g(a, l)
+                                })
+                            })*/
+                        },
+                        p = function (o) {
+                            var i = {
+                                setTargeting: {},
+                                setCategoryExclusion: "",
+                                setLocation: "",
+                                enableSingleRequest: !0,
+                                collapseEmptyDivs: "original",
+                                refreshExisting: !0,
+                                disablePublisherConsole: !1,
+                                disableInitialLoad: !1,
+                                noFetch: !1,
+                                namespace: n,
+                                sizeMapping: {}
+                            };
+                            if ("undefined" == typeof o.setUrlTargeting || o.setUrlTargeting) {
+                                var s = h(o.url);
+                                e.extend(!0, i.setTargeting, {
+                                    UrlHost: s.Host,
+                                    UrlPath: s.Path,
+                                    UrlQuery: s.Query
+                                })
+                            }
+                            return e.extend(!0, i, o), i.googletag && t.googletag.cmd.push(function () {
+                                e.extend(!0, t.googletag, i.googletag)
+                            }), i
+                        },
+                        m = function (n, a) {
+                            var l = t.googletag;
+                            a.each(function () {
+                                var t = e(this);
+                                s++;
+                                var o = y(t, n),
+                                    a = w(t, o),
+                                    r = v(t);
+                                t.data("existingContent", t.html()), t.html("").addClass("display-none"), l.cmd.push(function () {
+                                    var s, c = t.data(f);
+                                    if (c) s = c;
+                                    else {
+                                        var d;
+                                        d = "" === i ? o : "/" + i + "/" + o, t.data("outofpage") ? s = l.defineOutOfPageSlot(d, a) : (s = l.defineSlot(d, r, a), t.data("companion") && (s = s.addService(l.companionAds()))), s = s.addService(l.pubads())
+                                    }
+                                    var u = t.data("targeting");
+                                    u && e.each(u, function (e, t) {
+                                        s.setTargeting(e, t)
+                                    });
+                                    var p = t.data("exclusions");
+                                    if (p) {
+                                        var m, g = p.split(",");
+                                        e.each(g, function (t, o) {
+                                            m = e.trim(o), m.length > 0 && s.setCategoryExclusion(m)
+                                        })
+                                    }
+                                    var h = t.data("size-mapping");
+                                    if (h && n.sizeMapping[h]) {
+                                        var w = l.sizeMapping();
+                                        e.each(n.sizeMapping[h], function (e, t) {
+                                            w.addSize(t.browser, t.ad_sizes)
+                                        }), s.defineSizeMapping(w.build())
+                                    }
+                                    t.data(f, s), "function" == typeof n.beforeEachAdLoaded && n.beforeEachAdLoaded.call(this, t)
+                                })
+                            }), l.cmd.push(function () {
+                                var t = l.pubads();
+                                n.enableSingleRequest && t.enableSingleRequest(), e.each(n.setTargeting, function (e, o) {
+                                    t.setTargeting(e, o)
+                                });
+                                var i = n.setLocation;
+                                if ("object" == typeof i && ("number" == typeof i.latitude && "number" == typeof i.longitude && "number" == typeof i.precision ? t.setLocation(i.latitude, i.longitude, i.precision) : "number" == typeof i.latitude && "number" == typeof i.longitude && t.setLocation(i.latitude, i.longitude)), n.setCategoryExclusion.length > 0) {
+                                    var c, d = n.setCategoryExclusion.split(",");
+                                    e.each(d, function (o, n) {
+                                        c = e.trim(n), c.length > 0 && t.setCategoryExclusion(c)
+                                    })
+                                }
+                                n.collapseEmptyDivs && t.collapseEmptyDivs(), n.disablePublisherConsole && t.disablePublisherConsole(), n.companionAds && (l.companionAds().setRefreshUnfilledSlots(!0), n.disableInitialLoad || t.enableVideoAds()), n.disableInitialLoad && t.disableInitialLoad(), n.noFetch && t.noFetch(), t.addEventListener("slotRenderEnded", function (t) {
+                                    r++;
+                                    var o = e("#" + t.slot.getSlotId().getDomId()),
+                                        i = t.isEmpty ? "none" : "block",
+                                        l = o.data("existingContent");
+                                    "none" === i && e.trim(l).length > 0 && "original" === n.collapseEmptyDivs && (o.show().html(l), i = "block display-original"), o.removeClass("display-none").addClass("display-" + i), "function" == typeof n.afterEachAdLoaded && n.afterEachAdLoaded.call(this, o, t), "function" == typeof n.afterAllAdsLoaded && r === s && n.afterAllAdsLoaded.call(this, a)
+                                }), o.shouldCheckForAdBlockers() && !l._adBlocked_ && setTimeout(function () {
+                                    var i = t.getSlots ? t.getSlots() : [];
+                                    i.length > 0 && e.get(i[0].getContentUrl()).always(function (t) {
+                                        200 !== t.status && e.each(i, function () {
+                                            var t = e("#" + this.getSlotId().getDomId());
+                                            n.afterAdBlocked.call(o, t, this)
+                                        })
+                                    })
+                                }, 0), l.enableServices()
+                            })
+                        },
+                        g = function (n, i) {
+                            var s = t.googletag;
+                            if (o.shouldCheckForAdBlockers() && !s._adBlocked_ && s.getVersion) {
+                                var a = "//partner.googleadservices.com/gpt/pubads_impl_" + s.getVersion() + ".js";
+                                e.getScript(a).always(function (t) {
+                                    t && "error" === t.statusText && e.each(i, function () {
+                                        n.afterAdBlocked.call(o, e(this))
+                                    })
+                                })
+                            }
+                            i.each(function () {
+                                var t = e(this),
+                                    i = t.data(f);
+                                s._adBlocked_ && o.shouldCheckForAdBlockers() && n.afterAdBlocked.call(o, t), s.cmd.push(n.refreshExisting && i && t.hasClass("display-block") ? function () {
+                                    s.pubads().refresh([i])
+                                } : function () {
+                                    s.display(t.attr("id"))
+                                })
+                            })
+                        },
+                        h = function (e) {
+                            var o = (e || t.location.toString()).match(/^(([^:\/?#]+):)?(\/\/([^\/?#]*))?([^?#]*)(\?([^#]*))?(#(.*))?/),
+                                n = o[4] || "",
+                                i = (o[5] || "").replace(/(.)\/$/, "$1"),
+                                s = o[7] || "",
+                                a = s.replace(/\=/gi, ":").split("&");
+                            return {
+                                Host: n,
+                                Path: i,
+                                Query: a
+                            }
+                        },
+                        w = function (e, t) {
+                            return a++, e.attr("id") || e.attr("id", t.replace(/[^A-z0-9]/g, "_") + "-auto-gen-id-" + a).attr("id")
+                        },
+                        y = function (e, t) {
+                            var o = e.data("adunit") || t.namespace || e.attr("id") || "";
+                            return "function" == typeof t.alterAdUnitName && (o = t.alterAdUnitName.call(this, o, e)), o
+                        },
+                        v = function (t) {
+                            var o = [],
+                                n = t.data("dimensions");
+                            if (n) {
+                                var i = n.split(",");
+                                e.each(i, function (e, t) {
+                                    var n = t.split("x");
+                                    o.push([parseInt(n[0], 10), parseInt(n[1], 10)])
+                                })
+                            } else o.push([t.width(), t.height()]);
+                            return o
+                        },
+                        b = function (n, i) {
+                            function s() {
+                                o.shouldCheckForAdBlockers() && e.each(i, function () {
+                                    n.afterAdBlocked.call(o, e(this))
+                                })
+                            }
+                            if (d = d || e('script[src*="googletagservices.com/tag/js/gpt.js"]').length) return c && s(), e.Deferred().resolve();
+                            var a = e.Deferred();
+                            t.googletag = t.googletag || {}, t.googletag.cmd = t.googletag.cmd || [];
+                            var r = document.createElement("script");
+                            r.async = !0, r.type = "text/javascript", r.onerror = function () {
+                                k(), a.resolve(), c = !0, s()
+                            }, r.onload = function () {
+                                googletag._loadStarted_ || (googletag._adBlocked_ = !0, s()), a.resolve()
+                            };
+                            var l = "https:" === document.location.protocol;
+                            r.src = (l ? "https:" : "http:") + "//www.googletagservices.com/tag/js/gpt.js";
+                            var f = document.getElementsByTagName("script")[0];
+                            return f.parentNode.insertBefore(r, f), "none" === r.style.display && k(), a
+                        },
+                        k = function () {
+                            var n = t.googletag,
+                                i = n.cmd,
+                                s = function (e, t, o, i) {
+                                    return n.ads.push(o), n.ads[o] = {
+                                        renderEnded: function () {},
+                                        addService: function () {
+                                            return this
+                                        }
+                                    }, n.ads[o]
+                                };
+                            n = {
+                                cmd: {
+                                    push: function (e) {
+                                        e.call(o)
+                                    }
+                                },
+                                ads: [],
+                                pubads: function () {
+                                    return this
+                                },
+                                noFetch: function () {
+                                    return this
+                                },
+                                disableInitialLoad: function () {
+                                    return this
+                                },
+                                disablePublisherConsole: function () {
+                                    return this
+                                },
+                                enableSingleRequest: function () {
+                                    return this
+                                },
+                                setTargeting: function () {
+                                    return this
+                                },
+                                collapseEmptyDivs: function () {
+                                    return this
+                                },
+                                enableServices: function () {
+                                    return this
+                                },
+                                defineSlot: function (e, t, o) {
+                                    return s(e, t, o, !1)
+                                },
+                                defineOutOfPageSlot: function (e, t) {
+                                    return s(e, [], t, !0)
+                                },
+                                display: function (e) {
+                                    return n.ads[e].renderEnded.call(o), this
+                                }
+                            }, e.each(i, function (e, t) {
+                                n.cmd.push(t)
+                            })
+                        };
+                    e.dfp = e.fn.dfp = function (e, t) {
+                        t = t || {}, e === n && (e = i), "object" == typeof e && (t = e, e = t.dfpID || i);
+                        var o = this;
+                        return "function" == typeof this && (o = l), u(e, o, t), this
+                    }
+                })
+            }(window)
+        }).call(this, "undefined" != typeof global ? global : "undefined" != typeof self ? self : "undefined" != typeof window ? window : {})
+    }, {}],
+    11: [function (e, t, o) {
+        ! function (e) {
+            "use strict";
+            var t = e(window),
+                o = window.document,
+                n = e(o),
+                i = function () {
+                    for (var e, t = 3, n = o.createElement("div"), i = n.getElementsByTagName("i"); n.innerHTML = "<!--[if gt IE " + ++t + "]><i></i><![endif]-->", i[0];);
+                    return t > 4 ? t : e
+                }(),
+                s = function () {
+                    var e = void 0 !== window.pageXOffset ? window.pageXOffset : "CSS1Compat" == o.compatMode ? window.document.documentElement.scrollLeft : window.document.body.scrollLeft,
+                        t = void 0 !== window.pageYOffset ? window.pageYOffset : "CSS1Compat" == o.compatMode ? window.document.documentElement.scrollTop : window.document.body.scrollTop;
+                    "undefined" == typeof s.x && (s.x = e, s.y = t), "undefined" == typeof s.distanceX ? (s.distanceX = e, s.distanceY = t) : (s.distanceX = e - s.x, s.distanceY = t - s.y);
+                    var n = s.x - e,
+                        i = s.y - t;
+                    s.direction = n < 0 ? "right" : n > 0 ? "left" : i <= 0 ? "down" : i > 0 ? "up" : "first", s.x = e, s.y = t
+                };
+            t.on("scroll", s), e.fn.style = function (t) {
+                if (!t) return null;
+                var n, i = e(this),
+                    s = i.clone().css("display", "none");
+                s.find("input:radio").attr("name", "copy-" + Math.floor(100 * Math.random() + 1)), i.after(s);
+                var a = function (e, t) {
+                    var n;
+                    return e.currentStyle ? n = e.currentStyle[t.replace(/-\w/g, function (e) {
+                        return e.toUpperCase().replace("-", "")
+                    })] : window.getComputedStyle && (n = o.defaultView.getComputedStyle(e, null).getPropertyValue(t)), n = /margin/g.test(t) ? parseInt(n) === i[0].offsetLeft ? n : "auto" : n
+                };
+                return "string" == typeof t ? n = a(s[0], t) : (n = {}, e.each(t, function (e, t) {
+                    n[t] = a(s[0], t)
+                })), s.remove(), n || null
+            }, e.fn.extend({
+                hcSticky: function (o) {
+                    return 0 == this.length ? this : (this.pluginOptions("hcSticky", {
+                        top: 0,
+                        bottom: 0,
+                        bottomEnd: 0,
+                        innerTop: 0,
+                        innerSticker: null,
+                        className: "sticky",
+                        wrapperClassName: "wrapper-sticky",
+                        stickTo: null,
+                        responsive: !0,
+                        followScroll: !0,
+                        offResolutions: null,
+                        onStart: e.noop,
+                        onStop: e.noop,
+                        on: !0,
+                        fn: null
+                    }, o || {}, {
+                        reinit: function () {
+                            e(this).hcSticky()
+                        },
+                        stop: function () {
+                            e(this).pluginOptions("hcSticky", {
+                                on: !1
+                            }).each(function () {
+                                var t = e(this),
+                                    o = t.pluginOptions("hcSticky"),
+                                    n = t.parent("." + o.wrapperClassName),
+                                    i = t.offset().top - n.offset().top;
+                                t.css({
+                                    position: "absolute",
+                                    top: i,
+                                    bottom: "auto",
+                                    left: "auto",
+                                    right: "auto"
+                                }).removeClass(o.className)
+                            })
+                        },
+                        off: function () {
+                            e(this).pluginOptions("hcSticky", {
+                                on: !1
+                            }).each(function () {
+                                var t = e(this),
+                                    o = t.pluginOptions("hcSticky"),
+                                    n = t.parent("." + o.wrapperClassName);
+                                t.css({
+                                    position: "relative",
+                                    top: "auto",
+                                    bottom: "auto",
+                                    left: "auto",
+                                    right: "auto"
+                                }).removeClass(o.className), n.css("height", "auto")
+                            })
+                        },
+                        on: function () {
+                            e(this).each(function () {
+                                e(this).pluginOptions("hcSticky", {
+                                    on: !0,
+                                    remember: {
+                                        offsetTop: t.scrollTop()
+                                    }
+                                }).hcSticky()
+                            })
+                        },
+                        destroy: function () {
+                            var o = e(this),
+                                n = o.pluginOptions("hcSticky"),
+                                i = o.parent("." + n.wrapperClassName);
+                            o.removeData("hcStickyInit").css({
+                                position: i.css("position"),
+                                top: i.css("top"),
+                                bottom: i.css("bottom"),
+                                left: i.css("left"),
+                                right: i.css("right")
+                            }).removeClass(n.className), t.off("resize", n.fn.resize).off("scroll", n.fn.scroll), o.unwrap()
+                        }
+                    }), o && "undefined" != typeof o.on && (o.on ? this.hcSticky("on") : this.hcSticky("off")), "string" == typeof o ? this : this.each(function () {
+                        var o = e(this),
+                            a = o.pluginOptions("hcSticky"),
+                            r = function () {
+                                var e = o.parent("." + a.wrapperClassName);
+                                return e.length > 0 && (e.css({
+                                    height: o.outerHeight(!0),
+                                    width: function () {
+                                        var t = e.style("width");
+                                        return t.indexOf("%") >= 0 || "auto" == t ? ("border-box" == o.css("box-sizing") || "border-box" == o.css("-moz-box-sizing") ? o.css("width", e.width()) : o.css("width", e.width() - parseInt(o.css("padding-left") - parseInt(o.css("padding-right")))), t) : o.outerWidth(!0)
+                                    }()
+                                }), e)
+                            }() || function () {
+                                var t = o.style(["width", "margin-left", "left", "right", "top", "bottom", "float", "display"]),
+                                    n = o.css("display"),
+                                    s = e("<div>", {
+                                        class: a.wrapperClassName
+                                    }).css({
+                                        display: n,
+                                        height: o.outerHeight(!0),
+                                        width: function () {
+                                            return t.width.indexOf("%") >= 0 || "auto" == t.width && "inline-block" != n && "inline" != n ? (o.css("width", parseFloat(o.css("width"))), t.width) : "auto" != t.width || "inline-block" != n && "inline" != n ? "auto" == t["margin-left"] ? o.outerWidth() : o.outerWidth(!0) : o.width()
+                                        }(),
+                                        margin: t["margin-left"] ? "auto" : null,
+                                        position: function () {
+                                            var e = o.css("position");
+                                            return "static" == e ? "relative" : e
+                                        }(),
+                                        float: t.float || null,
+                                        left: t.left,
+                                        right: t.right,
+                                        top: t.top,
+                                        bottom: t.bottom,
+                                        "vertical-align": "top"
+                                    });
+                                return o.wrap(s), 7 === i && 0 === e("head").find("style#hcsticky-iefix").length && e('<style id="hcsticky-iefix">.' + a.wrapperClassName + " {zoom: 1;}</style>").appendTo("head"), o.parent()
+                            }();
+                        if (!o.data("hcStickyInit")) {
+                            o.data("hcStickyInit", !0);
+                            var l = !(!a.stickTo || !("document" == a.stickTo || a.stickTo.nodeType && 9 == a.stickTo.nodeType || "object" == typeof a.stickTo && a.stickTo instanceof("undefined" != typeof HTMLDocument ? HTMLDocument : Document))),
+                                c = a.stickTo ? l ? n : "string" == typeof a.stickTo ? e(a.stickTo) : a.stickTo : r.parent();
+                            o.css({
+                                top: "auto",
+                                bottom: "auto",
+                                left: "auto",
+                                right: "auto"
+                            }), t.load(function () {
+                                o.outerHeight(!0) > c.height() && (r.css("height", o.outerHeight(!0)), o.hcSticky("reinit"))
+                            });
+                            var d = function (e) {
+                                    o.hasClass(a.className) || (e = e || {}, o.css({
+                                        position: "fixed",
+                                        top: e.top || 0,
+                                        left: e.left || r.offset().left
+                                    }).addClass(a.className), a.onStart.apply(o[0]), r.addClass("sticky-active"))
+                                },
+                                f = function (e) {
+                                    e = e || {}, e.position = e.position || "absolute", e.top = e.top || 0, e.left = e.left || 0, "fixed" != o.css("position") && parseInt(o.css("top")) == e.top || (o.css({
+                                        position: e.position,
+                                        top: e.top,
+                                        left: e.left
+                                    }).removeClass(a.className), a.onStop.apply(o[0]), r.removeClass("sticky-active"))
+                                },
+                                u = function (n) {
+                                    if (a.on && o.is(":visible")) {
+                                        if (o.outerHeight(!0) >= c.height()) return void f();
+                                        var i, u = a.innerSticker ? e(a.innerSticker).position().top : a.innerTop ? a.innerTop : 0,
+                                            p = r.offset().top,
+                                            m = c.height() - a.bottomEnd + (l ? 0 : p),
+                                            g = r.offset().top - a.top + u,
+                                            h = o.outerHeight(!0) + a.bottom,
+                                            w = t.height(),
+                                            y = t.scrollTop(),
+                                            v = o.offset().top,
+                                            b = v - y;
+                                        if ("undefined" != typeof a.remember && a.remember) {
+                                            var k = v - a.top - u;
+                                            return void(h - u > w && a.followScroll ? k < y && y + w <= k + o.height() && (a.remember = !1) : a.remember.offsetTop > k ? y <= k && (d({
+                                                top: a.top - u
+                                            }), a.remember = !1) : y >= k && (d({
+                                                top: a.top - u
+                                            }), a.remember = !1))
+                                        }
+                                        y > g ? m + a.bottom - (a.followScroll && w < h ? 0 : a.top) <= y + h - u - (h - u > w - (g - u) && a.followScroll && (i = h - w - u) > 0 ? i : 0) ? f({
+                                            top: m - h + a.bottom - p
+                                        }) : h - u > w && a.followScroll ? b + h <= w ? "down" == s.direction ? d({
+                                            top: w - h
+                                        }) : b < 0 && "fixed" == o.css("position") && f({
+                                            top: v - (g + a.top - u) - s.distanceY
+                                        }) : "up" == s.direction && v >= y + a.top - u ? d({
+                                            top: a.top - u
+                                        }) : "down" == s.direction && v + h > w && "fixed" == o.css("position") && f({
+                                            top: v - (g + a.top - u) - s.distanceY
+                                        }) : d({
+                                            top: a.top - u
+                                        }) : f()
+                                    }
+                                },
+                                p = !1,
+                                m = !1,
+                                g = function () {
+                                    if (w(), h(), a.on) {
+                                        var e = function () {
+                                            "fixed" == o.css("position") ? o.css("left", r.offset().left) : o.css("left", 0)
+                                        };
+                                        if (a.responsive) {
+                                            m || (m = o.clone().attr("style", "").css({
+                                                visibility: "hidden",
+                                                height: 0,
+                                                overflow: "hidden",
+                                                paddingTop: 0,
+                                                paddingBottom: 0,
+                                                marginTop: 0,
+                                                marginBottom: 0
+                                            }), r.after(m));
+                                            var t = r.style("width"),
+                                                n = m.style("width");
+                                            "auto" == n && "auto" != t && (n = parseInt(o.css("width"))), n != t && r.width(n), p && clearTimeout(p), p = setTimeout(function () {
+                                                p = !1, m.remove(), m = !1
+                                            }, 250)
+                                        }
+                                        if (e(), o.outerWidth(!0) != r.width()) {
+                                            var i = "border-box" == o.css("box-sizing") || "border-box" == o.css("-moz-box-sizing") ? r.width() : r.width() - parseInt(o.css("padding-left")) - parseInt(o.css("padding-right"));
+                                            i = i - parseInt(o.css("margin-left")) - parseInt(o.css("margin-right")), o.css("width", i)
+                                        }
+                                    }
+                                };
+                            o.pluginOptions("hcSticky", {
+                                fn: {
+                                    scroll: u,
+                                    resize: g
+                                }
+                            });
+                            var h = function () {
+                                if (a.offResolutions) {
+                                    e.isArray(a.offResolutions) || (a.offResolutions = [a.offResolutions]);
+                                    var n = !0;
+                                    e.each(a.offResolutions, function (e, i) {
+                                        i < 0 ? t.width() < i * -1 && (n = !1, o.hcSticky("off")) : t.width() > i && (n = !1, o.hcSticky("off"))
+                                    }), n && !a.on && o.hcSticky("on")
+                                }
+                            };
+                            h(), t.on("resize", g);
+                            var w = function () {
+                                var o = !1;
+                                void 0 != e._data(window, "events").scroll && e.each(e._data(window, "events").scroll, function (e, t) {
+                                    t.handler == a.fn.scroll && (o = !0)
+                                }), o || (a.fn.scroll(!0), t.on("scroll", a.fn.scroll))
+                            };
+                            w()
+                        }
+                    }))
+                }
+            })
+        }(jQuery, this),
+        function (e, t) {
+            "use strict";
+            e.fn.extend({
+                pluginOptions: function (o, n, i, s) {
+                    return this.data(o) || this.data(o, {}), o && "undefined" == typeof n ? this.data(o).options : (i = i || n || {}, "object" == typeof i || i === t ? this.each(function () {
+                        var t = e(this);
+                        t.data(o).options ? t.data(o, e.extend(t.data(o), {
+                            options: e.extend(t.data(o).options, i || {})
+                        })) : (t.data(o, {
+                            options: e.extend(n, i || {})
+                        }), s && (t.data(o).commands = s))
+                    }) : "string" == typeof i ? this.each(function () {
+                        e(this).data(o).commands[i].call(this)
+                    }) : this)
+                }
+            })
+        }(jQuery)
+    }, {}],
+    12: [function (e, t, o) {
+        (function (e) {
+            ! function (t) {
+                "function" == typeof define && define.amd ? define(["jquery"], t) : t("object" == typeof o ? "undefined" != typeof window ? window.$ : "undefined" != typeof e ? e.$ : null : window.jQuery || window.Zepto)
+            }(function (e) {
+                var t, o, n, i, s, a, r = "Close",
+                    l = "BeforeClose",
+                    c = "AfterClose",
+                    d = "BeforeAppend",
+                    f = "MarkupParse",
+                    u = "Open",
+                    p = "Change",
+                    m = "mfp",
+                    g = "." + m,
+                    h = "mfp-ready",
+                    w = "mfp-removing",
+                    y = "mfp-prevent-close",
+                    v = function () {},
+                    b = !!window.jQuery,
+                    k = e(window),
+                    C = function (e, o) {
+                        t.ev.on(m + e + g, o)
+                    },
+                    S = function (t, o, n, i) {
+                        var s = document.createElement("div");
+                        return s.className = "mfp-" + t, n && (s.innerHTML = n), i ? o && o.appendChild(s) : (s = e(s), o && s.appendTo(o)), s
+                    },
+                    x = function (o, n) {
+                        t.ev.triggerHandler(m + o, n), t.st.callbacks && (o = o.charAt(0).toLowerCase() + o.slice(1), t.st.callbacks[o] && t.st.callbacks[o].apply(t, e.isArray(n) ? n : [n]))
+                    },
+                    I = function (o) {
+                        return o === a && t.currTemplate.closeBtn || (t.currTemplate.closeBtn = e(t.st.closeMarkup.replace("%title%", t.st.tClose)), a = o), t.currTemplate.closeBtn
+                    },
+                    T = function () {
+                        e.magnificPopup.instance || (t = new v, t.init(), e.magnificPopup.instance = t)
+                    },
+                    E = function () {
+                        var e = document.createElement("p").style,
+                            t = ["ms", "O", "Moz", "Webkit"];
+                        if (void 0 !== e.transition) return !0;
+                        for (; t.length;)
+                            if (t.pop() + "Transition" in e) return !0;
+                        return !1
+                    };
+                v.prototype = {
+                    constructor: v,
+                    init: function () {
+                        var o = navigator.appVersion;
+                        t.isIE7 = o.indexOf("MSIE 7.") !== -1, t.isIE8 = o.indexOf("MSIE 8.") !== -1, t.isLowIE = t.isIE7 || t.isIE8, t.isAndroid = /android/gi.test(o), t.isIOS = /iphone|ipad|ipod/gi.test(o), t.supportsTransition = E(), t.probablyMobile = t.isAndroid || t.isIOS || /(Opera Mini)|Kindle|webOS|BlackBerry|(Opera Mobi)|(Windows Phone)|IEMobile/i.test(navigator.userAgent), n = e(document), t.popupsCache = {}
+                    },
+                    open: function (o) {
+                        var i;
+                        if (o.isObj === !1) {
+                            t.items = o.items.toArray(), t.index = 0;
+                            var a, r = o.items;
+                            for (i = 0; i < r.length; i++)
+                                if (a = r[i], a.parsed && (a = a.el[0]), a === o.el[0]) {
+                                    t.index = i;
+                                    break
+                                }
+                        } else t.items = e.isArray(o.items) ? o.items : [o.items], t.index = o.index || 0;
+                        if (t.isOpen) return void t.updateItemHTML();
+                        t.types = [], s = "", o.mainEl && o.mainEl.length ? t.ev = o.mainEl.eq(0) : t.ev = n, o.key ? (t.popupsCache[o.key] || (t.popupsCache[o.key] = {}), t.currTemplate = t.popupsCache[o.key]) : t.currTemplate = {}, t.st = e.extend(!0, {}, e.magnificPopup.defaults, o), t.fixedContentPos = "auto" === t.st.fixedContentPos ? !t.probablyMobile : t.st.fixedContentPos, t.st.modal && (t.st.closeOnContentClick = !1, t.st.closeOnBgClick = !1, t.st.showCloseBtn = !1, t.st.enableEscapeKey = !1), t.bgOverlay || (t.bgOverlay = S("bg").on("click" + g, function () {
+                            t.close()
+                        }), t.wrap = S("wrap").attr("tabindex", -1).on("click" + g, function (e) {
+                            t._checkIfClose(e.target) && t.close()
+                        }), t.container = S("container", t.wrap)), t.contentContainer = S("content"), t.st.preloader && (t.preloader = S("preloader", t.container, t.st.tLoading));
+                        var l = e.magnificPopup.modules;
+                        for (i = 0; i < l.length; i++) {
+                            var c = l[i];
+                            c = c.charAt(0).toUpperCase() + c.slice(1), t["init" + c].call(t)
+                        }
+                        x("BeforeOpen"), t.st.showCloseBtn && (t.st.closeBtnInside ? (C(f, function (e, t, o, n) {
+                            o.close_replaceWith = I(n.type)
+                        }), s += " mfp-close-btn-in") : t.wrap.append(I())), t.st.alignTop && (s += " mfp-align-top"), t.fixedContentPos ? t.wrap.css({
+                            overflow: t.st.overflowY,
+                            overflowX: "hidden",
+                            overflowY: t.st.overflowY
+                        }) : t.wrap.css({
+                            top: k.scrollTop(),
+                            position: "absolute"
+                        }), (t.st.fixedBgPos === !1 || "auto" === t.st.fixedBgPos && !t.fixedContentPos) && t.bgOverlay.css({
+                            height: n.height(),
+                            position: "absolute"
+                        }), t.st.enableEscapeKey && n.on("keyup" + g, function (e) {
+                            27 === e.keyCode && t.close()
+                        }), k.on("resize" + g, function () {
+                            t.updateSize()
+                        }), t.st.closeOnContentClick || (s += " mfp-auto-cursor"), s && t.wrap.addClass(s);
+                        var d = t.wH = k.height(),
+                            p = {};
+                        if (t.fixedContentPos && t._hasScrollBar(d)) {
+                            var m = t._getScrollbarSize();
+                            m && (p.marginRight = m)
+                        }
+                        t.fixedContentPos && (t.isIE7 ? e("body, html").css("overflow", "hidden") : p.overflow = "hidden");
+                        var w = t.st.mainClass;
+                        return t.isIE7 && (w += " mfp-ie7"), w && t._addClassToMFP(w), t.updateItemHTML(), x("BuildControls"), e("html").css(p), t.bgOverlay.add(t.wrap).prependTo(t.st.prependTo || e(document.body)), t._lastFocusedEl = document.activeElement, setTimeout(function () {
+                            t.content ? (t._addClassToMFP(h), t._setFocus()) : t.bgOverlay.addClass(h), n.on("focusin" + g, t._onFocusIn)
+                        }, 16), t.isOpen = !0, t.updateSize(d), x(u), o
+                    },
+                    close: function () {
+                        t.isOpen && (x(l), t.isOpen = !1, t.st.removalDelay && !t.isLowIE && t.supportsTransition ? (t._addClassToMFP(w), setTimeout(function () {
+                            t._close()
+                        }, t.st.removalDelay)) : t._close())
+                    },
+                    _close: function () {
+                        x(r);
+                        var o = w + " " + h + " ";
+                        if (t.bgOverlay.detach(), t.wrap.detach(), t.container.empty(), t.st.mainClass && (o += t.st.mainClass + " "), t._removeClassFromMFP(o), t.fixedContentPos) {
+                            var i = {
+                                marginRight: ""
+                            };
+                            t.isIE7 ? e("body, html").css("overflow", "") : i.overflow = "", e("html").css(i)
+                        }
+                        n.off("keyup" + g + " focusin" + g), t.ev.off(g), t.wrap.attr("class", "mfp-wrap").removeAttr("style"), t.bgOverlay.attr("class", "mfp-bg"), t.container.attr("class", "mfp-container"), !t.st.showCloseBtn || t.st.closeBtnInside && t.currTemplate[t.currItem.type] !== !0 || t.currTemplate.closeBtn && t.currTemplate.closeBtn.detach(), t._lastFocusedEl && e(t._lastFocusedEl).focus(), t.currItem = null, t.content = null, t.currTemplate = null, t.prevHeight = 0, x(c)
+                    },
+                    updateSize: function (e) {
+                        if (t.isIOS) {
+                            var o = document.documentElement.clientWidth / window.innerWidth,
+                                n = window.innerHeight * o;
+                            t.wrap.css("height", n), t.wH = n
+                        } else t.wH = e || k.height();
+                        t.fixedContentPos || t.wrap.css("height", t.wH), x("Resize")
+                    },
+                    updateItemHTML: function () {
+                        var o = t.items[t.index];
+                        t.contentContainer.detach(), t.content && t.content.detach(), o.parsed || (o = t.parseEl(t.index));
+                        var n = o.type;
+                        if (x("BeforeChange", [t.currItem ? t.currItem.type : "", n]), t.currItem = o, !t.currTemplate[n]) {
+                            var s = !!t.st[n] && t.st[n].markup;
+                            x("FirstMarkupParse", s), s ? t.currTemplate[n] = e(s) : t.currTemplate[n] = !0
+                        }
+                        i && i !== o.type && t.container.removeClass("mfp-" + i + "-holder");
+                        var a = t["get" + n.charAt(0).toUpperCase() + n.slice(1)](o, t.currTemplate[n]);
+                        t.appendContent(a, n), o.preloaded = !0, x(p, o), i = o.type, t.container.prepend(t.contentContainer), x("AfterChange")
+                    },
+                    appendContent: function (e, o) {
+                        t.content = e, e ? t.st.showCloseBtn && t.st.closeBtnInside && t.currTemplate[o] === !0 ? t.content.find(".mfp-close").length || t.content.append(I()) : t.content = e : t.content = "", x(d), t.container.addClass("mfp-" + o + "-holder"), t.contentContainer.append(t.content)
+                    },
+                    parseEl: function (o) {
+                        var n, i = t.items[o];
+                        if (i.tagName ? i = {
+                                el: e(i)
+                            } : (n = i.type, i = {
+                                data: i,
+                                src: i.src
+                            }), i.el) {
+                            for (var s = t.types, a = 0; a < s.length; a++)
+                                if (i.el.hasClass("mfp-" + s[a])) {
+                                    n = s[a];
+                                    break
+                                }
+                            i.src = i.el.attr("data-mfp-src"), i.src || (i.src = i.el.attr("href"))
+                        }
+                        return i.type = n || t.st.type || "inline", i.index = o, i.parsed = !0, t.items[o] = i, x("ElementParse", i), t.items[o]
+                    },
+                    addGroup: function (e, o) {
+                        var n = function (n) {
+                            n.mfpEl = this, t._openClick(n, e, o)
+                        };
+                        o || (o = {});
+                        var i = "click.magnificPopup";
+                        o.mainEl = e, o.items ? (o.isObj = !0, e.off(i).on(i, n)) : (o.isObj = !1, o.delegate ? e.off(i).on(i, o.delegate, n) : (o.items = e, e.off(i).on(i, n)))
+                    },
+                    _openClick: function (o, n, i) {
+                        var s = void 0 !== i.midClick ? i.midClick : e.magnificPopup.defaults.midClick;
+                        if (s || 2 !== o.which && !o.ctrlKey && !o.metaKey) {
+                            var a = void 0 !== i.disableOn ? i.disableOn : e.magnificPopup.defaults.disableOn;
+                            if (a)
+                                if (e.isFunction(a)) {
+                                    if (!a.call(t)) return !0
+                                } else if (k.width() < a) return !0;
+                            o.type && (o.preventDefault(), t.isOpen && o.stopPropagation()), i.el = e(o.mfpEl), i.delegate && (i.items = n.find(i.delegate)), t.open(i)
+                        }
+                    },
+                    updateStatus: function (e, n) {
+                        if (t.preloader) {
+                            o !== e && t.container.removeClass("mfp-s-" + o), n || "loading" !== e || (n = t.st.tLoading);
+                            var i = {
+                                status: e,
+                                text: n
+                            };
+                            x("UpdateStatus", i), e = i.status, n = i.text, t.preloader.html(n), t.preloader.find("a").on("click", function (e) {
+                                e.stopImmediatePropagation()
+                            }), t.container.addClass("mfp-s-" + e), o = e
+                        }
+                    },
+                    _checkIfClose: function (o) {
+                        if (!e(o).hasClass(y)) {
+                            var n = t.st.closeOnContentClick,
+                                i = t.st.closeOnBgClick;
+                            if (n && i) return !0;
+                            if (!t.content || e(o).hasClass("mfp-close") || t.preloader && o === t.preloader[0]) return !0;
+                            if (o === t.content[0] || e.contains(t.content[0], o)) {
+                                if (n) return !0
+                            } else if (i && e.contains(document, o)) return !0;
+                            return !1
+                        }
+                    },
+                    _addClassToMFP: function (e) {
+                        t.bgOverlay.addClass(e), t.wrap.addClass(e)
+                    },
+                    _removeClassFromMFP: function (e) {
+                        this.bgOverlay.removeClass(e), t.wrap.removeClass(e)
+                    },
+                    _hasScrollBar: function (e) {
+                        return (t.isIE7 ? n.height() : document.body.scrollHeight) > (e || k.height())
+                    },
+                    _setFocus: function () {
+                        (t.st.focus ? t.content.find(t.st.focus).eq(0) : t.wrap).focus()
+                    },
+                    _onFocusIn: function (o) {
+                        if (o.target !== t.wrap[0] && !e.contains(t.wrap[0], o.target)) return t._setFocus(), !1
+                    },
+                    _parseMarkup: function (t, o, n) {
+                        var i;
+                        n.data && (o = e.extend(n.data, o)), x(f, [t, o, n]), e.each(o, function (e, o) {
+                            if (void 0 === o || o === !1) return !0;
+                            if (i = e.split("_"), i.length > 1) {
+                                var n = t.find(g + "-" + i[0]);
+                                if (n.length > 0) {
+                                    var s = i[1];
+                                    "replaceWith" === s ? n[0] !== o[0] && n.replaceWith(o) : "img" === s ? n.is("img") ? n.attr("src", o) : n.replaceWith('<img src="' + o + '" class="' + n.attr("class") + '" />') : n.attr(i[1], o)
+                                }
+                            } else t.find(g + "-" + e).html(o)
+                        })
+                    },
+                    _getScrollbarSize: function () {
+                        if (void 0 === t.scrollbarSize) {
+                            var e = document.createElement("div");
+                            e.style.cssText = "width: 99px; height: 99px; overflow: scroll; position: absolute; top: -9999px;", document.body.appendChild(e), t.scrollbarSize = e.offsetWidth - e.clientWidth, document.body.removeChild(e)
+                        }
+                        return t.scrollbarSize
+                    }
+                }, e.magnificPopup = {
+                    instance: null,
+                    proto: v.prototype,
+                    modules: [],
+                    open: function (t, o) {
+                        return T(), t = t ? e.extend(!0, {}, t) : {}, t.isObj = !0, t.index = o || 0, this.instance.open(t)
+                    },
+                    close: function () {
+                        return e.magnificPopup.instance && e.magnificPopup.instance.close()
+                    },
+                    registerModule: function (t, o) {
+                        o.options && (e.magnificPopup.defaults[t] = o.options), e.extend(this.proto, o.proto), this.modules.push(t)
+                    },
+                    defaults: {
+                        disableOn: 0,
+                        key: null,
+                        midClick: !1,
+                        mainClass: "",
+                        preloader: !0,
+                        focus: "",
+                        closeOnContentClick: !1,
+                        closeOnBgClick: !0,
+                        closeBtnInside: !0,
+                        showCloseBtn: !0,
+                        enableEscapeKey: !0,
+                        modal: !1,
+                        alignTop: !1,
+                        removalDelay: 0,
+                        prependTo: null,
+                        fixedContentPos: "auto",
+                        fixedBgPos: "auto",
+                        overflowY: "auto",
+                        closeMarkup: '<button title="%title%" type="button" class="mfp-close">×</button>',
+                        tClose: "Close (Esc)",
+                        tLoading: "Loading..."
+                    }
+                }, e.fn.magnificPopup = function (o) {
+                    T();
+                    var n = e(this);
+                    if ("string" == typeof o)
+                        if ("open" === o) {
+                            var i, s = b ? n.data("magnificPopup") : n[0].magnificPopup,
+                                a = parseInt(arguments[1], 10) || 0;
+                            s.items ? i = s.items[a] : (i = n, s.delegate && (i = i.find(s.delegate)), i = i.eq(a)), t._openClick({
+                                mfpEl: i
+                            }, n, s)
+                        } else t.isOpen && t[o].apply(t, Array.prototype.slice.call(arguments, 1));
+                    else o = e.extend(!0, {}, o), b ? n.data("magnificPopup", o) : n[0].magnificPopup = o, t.addGroup(n, o);
+                    return n
+                };
+                var _, O = function (o) {
+                    if (o.data && void 0 !== o.data.title) return o.data.title;
+                    var n = t.st.image.titleSrc;
+                    if (n) {
+                        if (e.isFunction(n)) return n.call(t, o);
+                        if (o.el) return o.el.attr(n) || ""
+                    }
+                    return ""
+                };
+                e.magnificPopup.registerModule("image", {
+                    options: {
+                        markup: '<div class="mfp-figure"><div class="mfp-close"></div><figure><div class="mfp-img"></div><figcaption><div class="mfp-bottom-bar"><div class="mfp-title"></div><div class="mfp-counter"></div></div></figcaption></figure></div>',
+                        cursor: "mfp-zoom-out-cur",
+                        titleSrc: "title",
+                        verticalFit: !0,
+                        tError: '<a href="%url%">The image</a> could not be loaded.'
+                    },
+                    proto: {
+                        initImage: function () {
+                            var o = t.st.image,
+                                n = ".image";
+                            t.types.push("image"), C(u + n, function () {
+                                "image" === t.currItem.type && o.cursor && e(document.body).addClass(o.cursor)
+                            }), C(r + n, function () {
+                                o.cursor && e(document.body).removeClass(o.cursor), k.off("resize" + g)
+                            }), C("Resize" + n, t.resizeImage), t.isLowIE && C("AfterChange", t.resizeImage)
+                        },
+                        resizeImage: function () {
+                            var e = t.currItem;
+                            if (e && e.img && t.st.image.verticalFit) {
+                                var o = 0;
+                                t.isLowIE && (o = parseInt(e.img.css("padding-top"), 10) + parseInt(e.img.css("padding-bottom"), 10)), e.img.css("max-height", t.wH - o)
+                            }
+                        },
+                        _onImageHasSize: function (e) {
+                            e.img && (e.hasSize = !0, _ && clearInterval(_), e.isCheckingImgSize = !1, x("ImageHasSize", e), e.imgHidden && (t.content && t.content.removeClass("mfp-loading"), e.imgHidden = !1))
+                        },
+                        findImageSize: function (e) {
+                            var o = 0,
+                                n = e.img[0],
+                                i = function (s) {
+                                    _ && clearInterval(_), _ = setInterval(function () {
+                                        return n.naturalWidth > 0 ? void t._onImageHasSize(e) : (o > 200 && clearInterval(_), o++, void(3 === o ? i(10) : 40 === o ? i(50) : 100 === o && i(500)))
+                                    }, s)
+                                };
+                            i(1)
+                        },
+                        getImage: function (o, n) {
+                            var i = 0,
+                                s = function () {
+                                    o && (o.img[0].complete ? (o.img.off(".mfploader"), o === t.currItem && (t._onImageHasSize(o), t.updateStatus("ready")), o.hasSize = !0, o.loaded = !0, x("ImageLoadComplete")) : (i++, i < 200 ? setTimeout(s, 100) : a()))
+                                },
+                                a = function () {
+                                    o && (o.img.off(".mfploader"), o === t.currItem && (t._onImageHasSize(o), t.updateStatus("error", r.tError.replace("%url%", o.src))), o.hasSize = !0, o.loaded = !0, o.loadError = !0)
+                                },
+                                r = t.st.image,
+                                l = n.find(".mfp-img");
+                            if (l.length) {
+                                var c = document.createElement("img");
+                                c.className = "mfp-img", o.el && o.el.find("img").length && (c.alt = o.el.find("img").attr("alt")), o.img = e(c).on("load.mfploader", s).on("error.mfploader", a), c.src = o.src, l.is("img") && (o.img = o.img.clone()), c = o.img[0], c.naturalWidth > 0 ? o.hasSize = !0 : c.width || (o.hasSize = !1)
+                            }
+                            return t._parseMarkup(n, {
+                                    title: O(o),
+                                    img_replaceWith: o.img
+                                }, o),
+                                t.resizeImage(), o.hasSize ? (_ && clearInterval(_), o.loadError ? (n.addClass("mfp-loading"), t.updateStatus("error", r.tError.replace("%url%", o.src))) : (n.removeClass("mfp-loading"), t.updateStatus("ready")), n) : (t.updateStatus("loading"), o.loading = !0, o.hasSize || (o.imgHidden = !0, n.addClass("mfp-loading"), t.findImageSize(o)), n)
+                        }
+                    }
+                });
+                var z, B = function () {
+                    return void 0 === z && (z = void 0 !== document.createElement("p").style.MozTransform), z
+                };
+                e.magnificPopup.registerModule("zoom", {
+                    options: {
+                        enabled: !1,
+                        easing: "ease-in-out",
+                        duration: 300,
+                        opener: function (e) {
+                            return e.is("img") ? e : e.find("img")
+                        }
+                    },
+                    proto: {
+                        initZoom: function () {
+                            var e, o = t.st.zoom,
+                                n = ".zoom";
+                            if (o.enabled && t.supportsTransition) {
+                                var i, s, a = o.duration,
+                                    c = function (e) {
+                                        var t = e.clone().removeAttr("style").removeAttr("class").addClass("mfp-animated-image"),
+                                            n = "all " + o.duration / 1e3 + "s " + o.easing,
+                                            i = {
+                                                position: "fixed",
+                                                zIndex: 9999,
+                                                left: 0,
+                                                top: 0,
+                                                "-webkit-backface-visibility": "hidden"
+                                            },
+                                            s = "transition";
+                                        return i["-webkit-" + s] = i["-moz-" + s] = i["-o-" + s] = i[s] = n, t.css(i), t
+                                    },
+                                    d = function () {
+                                        t.content.css("visibility", "visible")
+                                    };
+                                C("BuildControls" + n, function () {
+                                    if (t._allowZoom()) {
+                                        if (clearTimeout(i), t.content.css("visibility", "hidden"), e = t._getItemToZoom(), !e) return void d();
+                                        s = c(e), s.css(t._getOffset()), t.wrap.append(s), i = setTimeout(function () {
+                                            s.css(t._getOffset(!0)), i = setTimeout(function () {
+                                                d(), setTimeout(function () {
+                                                    s.remove(), e = s = null, x("ZoomAnimationEnded")
+                                                }, 16)
+                                            }, a)
+                                        }, 16)
+                                    }
+                                }), C(l + n, function () {
+                                    if (t._allowZoom()) {
+                                        if (clearTimeout(i), t.st.removalDelay = a, !e) {
+                                            if (e = t._getItemToZoom(), !e) return;
+                                            s = c(e)
+                                        }
+                                        s.css(t._getOffset(!0)), t.wrap.append(s), t.content.css("visibility", "hidden"), setTimeout(function () {
+                                            s.css(t._getOffset())
+                                        }, 16)
+                                    }
+                                }), C(r + n, function () {
+                                    t._allowZoom() && (d(), s && s.remove(), e = null)
+                                })
+                            }
+                        },
+                        _allowZoom: function () {
+                            return "image" === t.currItem.type
+                        },
+                        _getItemToZoom: function () {
+                            return !!t.currItem.hasSize && t.currItem.img
+                        },
+                        _getOffset: function (o) {
+                            var n;
+                            n = o ? t.currItem.img : t.st.zoom.opener(t.currItem.el || t.currItem);
+                            var i = n.offset(),
+                                s = parseInt(n.css("padding-top"), 10),
+                                a = parseInt(n.css("padding-bottom"), 10);
+                            i.top -= e(window).scrollTop() - s;
+                            var r = {
+                                width: n.width(),
+                                height: (b ? n.innerHeight() : n[0].offsetHeight) - a - s
+                            };
+                            return B() ? r["-moz-transform"] = r.transform = "translate(" + i.left + "px," + i.top + "px)" : (r.left = i.left, r.top = i.top), r
+                        }
+                    }
+                }), T()
+            })
+        }).call(this, "undefined" != typeof global ? global : "undefined" != typeof self ? self : "undefined" != typeof window ? window : {})
+    }, {}],
+    13: [function (e, t, o) {
+        (function (e) {
+            "undefined" != typeof window ? window.$ : "undefined" != typeof e ? e.$ : null, jQuery(function (e) {
+                window.phx_scrolled = 0, e(window).scroll(function (t) {
+                    e(this).scrollTop() > window.phx_scrolled ? e(this).trigger("scrollDown") : e(this).trigger("scrollUp"), window.phx_scrolled = e(this).scrollTop()
+                })
+            }), t.exports = {
+                elementInView: function (e) {
+                    var t = {
+                            top: $(window).scrollTop(),
+                            height: $(window).height()
+                        },
+                        o = $(e).offset();
+                    $(window).scroll(function (n) {
+                        t.top = $(window).scrollTop(), o = $(e).offset();
+                        var i = t.top + t.height >= o.top;
+                        $(e).trigger("inViewport", [i])
+                    })
+                }
+            }
+        }).call(this, "undefined" != typeof global ? global : "undefined" != typeof self ? self : "undefined" != typeof window ? window : {})
+    }, {}],
+    14: [function (e, t, o) {
+        (function (e) {
+            "undefined" != typeof window ? window.$ : "undefined" != typeof e ? e.$ : null, jQuery(function (e) {
+                e(".mobile-menu-toggle").click(function () {
+                    e("body").toggleClass("mobile-menu-open")
+                }), e(".mobile-menu-exit").click(function () {
+                    e("body").removeClass("mobile-menu-open")
+                })
+            })
+        }).call(this, "undefined" != typeof global ? global : "undefined" != typeof self ? self : "undefined" != typeof window ? window : {})
+    }, {}],
+    15: [function (e, t, o) {
+        (function (t) {
+            "undefined" != typeof window ? window.$ : "undefined" != typeof t ? t.$ : null, e("./modules/jquery.cookie"), jQuery(function (e) {
+                e.cookie("phx-cookie-info") || (e.cookie("phx-cookie-info", !0, {
+                    expires: 365,
+                    path: "/"
+                }), e("#cookie-info").fadeIn(), e("#cookie-info a").click(function () {
+                    e("#cookie-info").fadeOut()
+                }))
+            })
+        }).call(this, "undefined" != typeof global ? global : "undefined" != typeof self ? self : "undefined" != typeof window ? window : {})
+    }, {
+        "./modules/jquery.cookie": 9
+    }],
+    16: [function (e, t, o) {
+        (function (t) {
+            "undefined" != typeof window ? window.$ : "undefined" != typeof t ? t.$ : null;
+            var o = e("./modules/scroll-events");
+            jQuery(function (e) {
+                e("#related-posts").length && (o.elementInView("#related-posts"), e("#related-posts").on("inViewport", function (t, o) {
+                    o ? e("#related-posts-mobile").removeClass("visible") : (e(window).on("scrollDown", function () {
+                        e("#related-posts-mobile").addClass("visible")
+                    }), e(window).on("scrollUp", function () {
+                        e("#related-posts-mobile").removeClass("visible")
+                    }))
+                }))
+            })
+        }).call(this, "undefined" != typeof global ? global : "undefined" != typeof self ? self : "undefined" != typeof window ? window : {})
+    }, {
+        "./modules/scroll-events": 13
+    }],
+    17: [function (e, t, o) {
+        (function (t) {
+            "undefined" != typeof window ? window.$ : "undefined" != typeof t ? t.$ : null, e("./modules/scroll-events"), jQuery(function (e) {
+                e(window).on("scrollDown", function () {
+                    e(".share-widget-mobile-top").addClass("visible")
+                }), e(window).on("scrollUp", function () {
+                    e(".share-widget-mobile-top").removeClass("visible")
+                })
+            })
+        }).call(this, "undefined" != typeof global ? global : "undefined" != typeof self ? self : "undefined" != typeof window ? window : {})
+    }, {
+        "./modules/scroll-events": 13
+    }],
+    18: [function (e, t, o) {
+        (function (t) {
+            "undefined" != typeof window ? window.$ : "undefined" != typeof t ? t.$ : null;
+            var o = e("./modules/analytics"),
+                n = e("./modules/config");
+            n.facebook.appId && (window.fbAsyncInit = function () {
+                FB.init({
+                    appId: n.facebook.appId,
+                    xfbml: !0,
+                    version: n.facebook.version
+                })
+            }, function (e, t, o) {
+                var n, i = e.getElementsByTagName(t)[0];
+                e.getElementById(o) || (n = e.createElement(t), n.id = o, n.src = "//connect.facebook.net/es_ES/sdk.js", i.parentNode.insertBefore(n, i))
+            }(document, "script", "facebook-jssdk")), n.facebook.pixel && (! function (e, t, o, n, i, s, a) {
+                e.fbq || (i = e.fbq = function () {
+                    i.callMethod ? i.callMethod.apply(i, arguments) : i.queue.push(arguments)
+                }, e._fbq || (e._fbq = i), i.push = i, i.loaded = !0, i.version = "2.0", i.queue = [], s = t.createElement(o), s.async = !0, s.src = n, a = t.getElementsByTagName(o)[0], a.parentNode.insertBefore(s, a))
+            }(window, document, "script", "https://connect.facebook.net/en_US/fbevents.js"), fbq("init", n.facebook.pixel), fbq("track", "PageView")), jQuery(function (e) {
+                e(".btn-share").click(function (t) {
+                    1 == t.which && (t.preventDefault(), window.open(e(this).attr("href"), "sharewindow", "left=20,top=20,width=600,height=480,toolbar=0,resizable=1")), o.trackSocial(e(this).data())
+                })
+            })
+        }).call(this, "undefined" != typeof global ? global : "undefined" != typeof self ? self : "undefined" != typeof window ? window : {})
+    }, {
+        "./modules/analytics": 7,
+        "./modules/config": 8
+    }]
+}, {}, [2]);
